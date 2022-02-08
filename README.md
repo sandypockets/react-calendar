@@ -1,3 +1,8 @@
+# React Calendar
+React Calendar is a lightweight date picker, styled with Tailwind CSS. The project is currently in progress. Once complete, it will be made available as a package on npm or yarn.
+
+---
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
