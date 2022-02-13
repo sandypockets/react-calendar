@@ -14,60 +14,10 @@ const fullMonths = [
   'November',
   'December'
 ]
-const fullDays = [
-  'sunday',
-  'monday',
-  'tuesday',
-  'wednesday',
-  'thursday',
-  'friday',
-  'saturday',
-]
-
-function formatCompleteDate() {
-  const today = new Date();
-  const currentYear = today.getFullYear();
-  const currentDayNameIndex = today.getDate()
-  const currentDayNumber = today.getDay()
-  const currentMonthIndex = today.getMonth();
-
-  const currentDayName = fullDays[currentDayNumber]
-  const currentMonthName = fullMonths[currentMonthIndex]
-
-  function getDateSuffix(number) {
-    let suffix = ''
-    if (number.length > 1) {
-      number = number[1]
-    }
-    switch (number) {
-      case 1:
-        suffix = 'st';
-        break;
-      case 2:
-        suffix = 'nd'
-        break;
-      case 3:
-        suffix = 'rd'
-        break;
-      default:
-        suffix = 'th'
-    }
-    return suffix;
-  }
-
-  function addSuffixToDate(number, suffix) {
-    return `${number.toString()}${suffix}`
-  }
-
-  const dateSuffix = getDateSuffix(currentDayNameIndex)
-  const outputSuffix = addSuffixToDate(currentDayNameIndex, dateSuffix)
-  return `${currentDayName}, ${currentMonthName} ${outputSuffix}, ${currentYear}`
-}
 
 export default function DatePicker() {
   const today = new Date();
   const currentYear = today.getFullYear();
-  // const currentDayNumber = today.getDate()
   const currentDayNameIndex = today.getDay()
   const currentMonthIndex = today.getMonth();
 
@@ -77,8 +27,6 @@ export default function DatePicker() {
   const [endHighlightMonthToShow, setEndHighlightMonthToShow] = useState(monthToShow)
 
   const [yearToShow, setYearToShow] = useState(Number(currentYear))
-  // const [dayToShow, setDayToShow] = useState(Number(currentDayNumber))
-  // const dateToday = formatCompleteDate()
 
   const [firstSelectedDay, setFirstSelectedDay] = useState()
   const [secondSelectedDay, setSecondSelectedDay] = useState()
@@ -108,11 +56,10 @@ export default function DatePicker() {
         console.log("Second date must be after the first date")
       }
     }
-    // highlight all days between
-    // setDayToShow(itemClicked)
   }
 
   useEffect(() => {
+    // Debugging
     console.log("firstSelectedDay", firstSelectedDay)
     console.log("secondSelectedDay", secondSelectedDay)
     console.log("startHighlightMonthToShow", startHighlightMonthToShow)
@@ -136,7 +83,6 @@ export default function DatePicker() {
         setMonthToShow(0)
       }
     }
-    console.log(monthToShow)
   }
 
   function addEmptyDays(calendarDates) {
@@ -188,10 +134,11 @@ export default function DatePicker() {
             <table className="min-w-full divide-y divide-gray-200 mt-2">
               <thead className="bg-gray-50 border-1 border-gray-200 border-solid">
               <tr>
-              {dayInitial.map((initial) => (
+              {dayInitial.map((initial, index) => (
                   <th
                     scope="col"
                     className=" py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-center"
+                    key={index}
                   >
                     {initial}
                   </th>
