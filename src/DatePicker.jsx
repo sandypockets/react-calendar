@@ -67,14 +67,18 @@ function formatCompleteDate() {
 export default function DatePicker() {
   const today = new Date();
   const currentYear = today.getFullYear();
-  const currentDayNumber = today.getDate()
+  // const currentDayNumber = today.getDate()
   const currentDayNameIndex = today.getDay()
   const currentMonthIndex = today.getMonth();
 
   const [monthToShow, setMonthToShow] = useState(Number(currentMonthIndex))
+
+  const [startHighlightMonthToShow, setStartHighlightMonthToShow] = useState(monthToShow)
+  const [endHighlightMonthToShow, setEndHighlightMonthToShow] = useState(monthToShow)
+
   const [yearToShow, setYearToShow] = useState(Number(currentYear))
-  const [dayToShow, setDayToShow] = useState(Number(currentDayNumber))
-  const dateToday = formatCompleteDate()
+  // const [dayToShow, setDayToShow] = useState(Number(currentDayNumber))
+  // const dateToday = formatCompleteDate()
 
   const [firstSelectedDay, setFirstSelectedDay] = useState()
   const [secondSelectedDay, setSecondSelectedDay] = useState()
@@ -90,11 +94,13 @@ export default function DatePicker() {
       setFirstSelectedDay(itemClicked)
       setSecondSelectedDay(itemClicked)
       setFirstDayIsSet(true)
+      setStartHighlightMonthToShow(monthToShow)
     } else {
       // set second day selection
       if (itemClicked > firstSelectedDay) {
         setSecondSelectedDay(itemClicked)
         setFirstDayIsSet(false)
+        setEndHighlightMonthToShow(monthToShow)
       } else {
         setFirstSelectedDay(itemClicked)
         setSecondSelectedDay(null)
@@ -103,13 +109,15 @@ export default function DatePicker() {
       }
     }
     // highlight all days between
-    setDayToShow(itemClicked)
+    // setDayToShow(itemClicked)
   }
 
   useEffect(() => {
     console.log("firstSelectedDay", firstSelectedDay)
     console.log("secondSelectedDay", secondSelectedDay)
-  }, [firstSelectedDay, secondSelectedDay])
+    console.log("startHighlightMonthToShow", startHighlightMonthToShow)
+    console.log("endHighlightMonthToShow", endHighlightMonthToShow)
+  }, [firstSelectedDay, secondSelectedDay, startHighlightMonthToShow, endHighlightMonthToShow])
 
   function handleButtonClick(action) {
     if (action === 'prev') {
@@ -170,11 +178,11 @@ export default function DatePicker() {
 
   return (
     <div className="flex flex-col">
-      <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div className="overflow-x-auto">
         <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
           <div className="h-64 my-auto6 shadow overflow-hidden border-b border-gray-200 border-1 border-solid border-gray-300 border-b-0 rounded p-4">
             <div className="flex justify-between text-sm">
-              <h2 className="w-56">{dateToday}</h2>
+              {/*<h2 className="w-56">{dateToday}</h2>*/}
               <h2 className="font-semibold">{fullMonths[monthToShow]}, {yearToShow}</h2>
             </div>
             <table className="min-w-full divide-y divide-gray-200 mt-2">
@@ -183,7 +191,7 @@ export default function DatePicker() {
               {dayInitial.map((initial) => (
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-center"
+                    className=" py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-center"
                   >
                     {initial}
                   </th>
@@ -200,6 +208,8 @@ export default function DatePicker() {
                         (subItem === firstSelectedDay || subItem >= firstSelectedDay)
                         &&
                         (subItem <= secondSelectedDay || subItem === secondSelectedDay)
+                        &&
+                        (monthToShow >= startHighlightMonthToShow && monthToShow <= endHighlightMonthToShow)
                           ?
                           "border-solid border-gray-300 border-1 text-center bg-gray-200" :
                           "border-solid border-gray-200 border-1 text-center"
