@@ -16,10 +16,11 @@ const fullMonths = [
 ]
 
 export default function DatePicker() {
-  const today = new Date();
+  const today = new Date(); //?
   const currentYear = today.getFullYear();
-  const currentDayNameIndex = today.getDay()
+  const currentDayNameIndex = today.getDay() //?
   const currentMonthIndex = today.getMonth();
+  const currentDate = today.getDate()
 
   const [monthToShow, setMonthToShow] = useState(Number(currentMonthIndex))
 
@@ -163,7 +164,9 @@ export default function DatePicker() {
                       }
                       onClick={() => handleDayClick(subItem)}
                     >
-                      {subItem}
+                      <span className={monthToShow === currentMonthIndex && subItem === currentDate ? "bg-gray-900 p-1 rounded-full text-white" : "p-1"}>
+                        {subItem}
+                      </span>
                     </td>
                   ))}
                 </tr>
