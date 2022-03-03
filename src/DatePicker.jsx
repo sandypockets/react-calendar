@@ -32,12 +32,19 @@ export default function DatePicker() {
   const [firstSelectedDay, setFirstSelectedDay] = useState()
   const [secondSelectedDay, setSecondSelectedDay] = useState()
   const [firstDayIsSet, setFirstDayIsSet] = useState(false)
+  const [secondDayIsSet, setSecondDayIsSet] = useState(false)
 
   let selectedMonthStartDayIndex = (new Date(yearToShow, monthToShow)).getDay();
   let daysInSelectedMonth = 32 - new Date(yearToShow, monthToShow, 32).getDate();
   console.log("Day to show: ", currentDayNameIndex)
 
   function handleDayClick(itemClicked) {
+    if (firstDayIsSet && secondDayIsSet) {
+      setFirstDayIsSet(false)
+      setSecondDayIsSet(false)
+      setSecondSelectedDay(null)
+      setFirstSelectedDay(null)
+    }
     // set first day selection
     if (!firstDayIsSet) {
       setFirstSelectedDay(itemClicked)
@@ -129,11 +136,10 @@ export default function DatePicker() {
         <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
           <div className="h-64 my-auto6 shadow overflow-hidden border-b border-gray-200 border-1 border-solid border-gray-300 border-b-0 rounded p-4">
             <div className="flex justify-between text-sm">
-              {/*<h2 className="w-56">{dateToday}</h2>*/}
               <h2 className="font-semibold">{fullMonths[monthToShow]}, {yearToShow}</h2>
             </div>
             <table className="min-w-full divide-y divide-gray-200 mt-2">
-              <thead className="bg-gray-50 border-1 border-gray-200 border-solid">
+              <thead className="bg-gray-50 border-2 border-gray-200 border-solid">
               <tr>
               {dayInitial.map((initial, index) => (
                   <th
@@ -146,25 +152,28 @@ export default function DatePicker() {
                 ))}
               </tr>
               </thead>
-              <tbody className="border-1 border-solid border-black">
+              <tbody>
               {calendarDates.map((item, index) => (
                 <tr key={index}>
                   {calendarDates[index].map((subItem, subIndex) => (
                     <td
                       key={subIndex}
                       className={
-                        (subItem === firstSelectedDay || subItem >= firstSelectedDay)
-                        &&
-                        (subItem <= secondSelectedDay || subItem === secondSelectedDay)
-                        &&
-                        (monthToShow >= startHighlightMonthToShow && monthToShow <= endHighlightMonthToShow)
-                          ?
-                          "border-solid border-gray-300 border-1 text-center bg-gray-200" :
-                          "border-solid border-gray-200 border-1 text-center"
+                        firstSelectedDay && secondSelectedDay ? (
+                          (subItem === firstSelectedDay || subItem >= firstSelectedDay)
+                          &&
+                          (subItem <= secondSelectedDay || subItem === secondSelectedDay)
+                          &&
+                          (monthToShow >= startHighlightMonthToShow && monthToShow <= endHighlightMonthToShow)
+                            ?
+                            "border-solid border-gray-300 border-2 text-center bg-gray-200 p-0.5" :
+                            "border-solid border-gray-200 border-2 text-center p-0.5"
+                        ) :
+                          "border-solid border-gray-200 border-2 text-center p-0.5"
                       }
                       onClick={() => handleDayClick(subItem)}
                     >
-                      <span className={monthToShow === currentMonthIndex && subItem === currentDate ? "bg-gray-900 p-1 rounded-full text-white" : "p-1"}>
+                      <span className={monthToShow === currentMonthIndex && subItem === currentDate ? "bg-gray-900 py-1 px-2 rounded-full text-white" : "py-1 px-2"}>
                         {subItem}
                       </span>
                     </td>
