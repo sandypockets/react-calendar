@@ -183,17 +183,17 @@ export default function DatePicker() {
               </tbody>
             </table>
           </div>
-          <div className="flex justify-center mt-6">
+          <div className="flex justify-center mt-3">
             <div className="max-w-2xl flex justify-between">
               <button
                 onClick={() => handleButtonClick('prev')}
-                className="mx-2 px-6 py-1 bg-gray-300"
+                className="mx-2 px-14 py-1 bg-gray-300 rounded-sm bg-black text-white shadow-md"
               >
                 Prev
               </button>
               <button
                 onClick={() => handleButtonClick('next')}
-                className="mx-2 px-6 py-1 bg-gray-300"
+                className="mx-2 px-14 py-1 bg-gray-300 rounded-sm bg-black text-white shadow-md"
               >
                 Next
               </button>
